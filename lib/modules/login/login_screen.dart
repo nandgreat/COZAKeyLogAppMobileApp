@@ -1,7 +1,8 @@
 import 'package:coza_app/components/alternate_login.dart';
 import 'package:coza_app/components/base_screen.dart';
 import 'package:coza_app/components/custom_button.dart';
-import 'package:coza_app/modules/login/controller/login_controller.dart';
+import 'package:coza_app/modules/login/login_controller.dart';
+import 'package:coza_app/modules/signup/signup_screen.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,19 +72,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         isLoading: loginController.isLoading.value,
                         onPressed: handleLogin);
                   }),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "Don't have an Account? ",
-                        style: TextStyle(fontSize: 12.0),
+                  InkWell(
+                    onTap: () => Get.to(SignupScreen()),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Don't have an Account? ",
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                          Text(
+                            "Sign up",
+                            style: TextStyle(
+                                fontSize: 12.0, fontWeight: FontWeight.bold),
+                          )
+                        ],
                       ),
-                      Text(
-                        "Sign up",
-                        style: TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.bold),
-                      )
-                    ],
+                    ),
                   ),
                   const SizedBox(
                     height: 40.0,

@@ -102,10 +102,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   fontSize: 14.0,
                   fontWeight: FontWeight.w200),
               contentPadding: EdgeInsets.only(
-                  top: 20,
+                  top: 10,
                   bottom: bottomPaddingToError,
-                  left: 20.0,
-                  right: 20.0),
+                  left: 10.0,
+                  right: 10.0),
               isDense: true,
               errorStyle: const TextStyle(color: Colors.red, fontSize: 12.0),
               errorBorder: OutlineInputBorder(

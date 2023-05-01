@@ -18,10 +18,8 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-
   @override
   void initState() {
-
     getUserInfo();
 
     super.initState();
@@ -33,7 +31,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
     logItem(user);
 
-    if(user != null){
+    if (user != null) {
       Get.to(HomeScreen());
     }
   }
@@ -91,7 +89,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         ),
                         TextButton(
                             onPressed: () {
-                              Get.to(const SignupScreen());
+                              Get.to(SignupScreen());
                             },
                             child: Container(
                               width: 200,

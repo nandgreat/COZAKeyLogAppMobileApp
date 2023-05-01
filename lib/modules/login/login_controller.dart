@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../home/home_screen.dart';
+import '../home/home_screen.dart';
 
 class LoginController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();

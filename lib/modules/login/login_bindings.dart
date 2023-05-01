@@ -1,5 +1,5 @@
 
-import 'package:coza_app/modules/login/controller/login_controller.dart';
+import 'package:coza_app/modules/login/login_controller.dart';
 import 'package:get/get.dart';
 
 class LoginBinding extends Bindings {
