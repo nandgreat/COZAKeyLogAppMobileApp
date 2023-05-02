@@ -16,4 +16,8 @@ class AuthRepository extends GetxService {
     String url = Endpoints.REGISTER;
     return apiClient.postRequest(url: url, data: body.toJson());
   }
+  Future<Response> verifyOtp(String otp) async {
+    String url = Endpoints.VERIFY_OTP;
+    return apiClient.get("$url$otp");
+  }
 }

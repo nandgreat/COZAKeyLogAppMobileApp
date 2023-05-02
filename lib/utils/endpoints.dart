@@ -7,5 +7,5 @@ class Endpoints {
 
   static const String REGISTER = "auth/register";
   static const String LOGIN = "auth/login";
-  static const String VERIFY_OTP = "api/v1/auth/verify/782623";
+  static const String VERIFY_OTP = "auth/verify/";
 }

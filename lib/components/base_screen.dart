@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../res/color_palette.dart';
 import '../res/images.dart';
@@ -14,7 +12,7 @@ class BaseScreen extends StatelessWidget {
       {Key? key,
       this.title,
       this.child,
-      this.showBackBtn,
+      this.showBackBtn = true,
       this.onPress,
       this.useToolBar = true,
       this.leftIcon,
@@ -25,7 +23,7 @@ class BaseScreen extends StatelessWidget {
   final String? title;
   final Widget? leftIcon;
   final Widget? rightIcon;
-  bool? showBackBtn = true;
+  final bool? showBackBtn;
   final bool useToolBar;
 
   @override
@@ -73,7 +71,7 @@ class BaseScreen extends StatelessWidget {
                       ? CustomAppBar(
                           title: title ?? "",
                           showBackBtn: showBackBtn,
-                          rightIcon: rightIcon ?? null,
+                          rightIcon: rightIcon,
                           leftIcon: leftIcon ??
                               Container(
                                 decoration: BoxDecoration(

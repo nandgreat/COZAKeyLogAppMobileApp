@@ -8,10 +8,10 @@ class CustomAppBar extends StatelessWidget {
   final Widget? leftIcon;
   final Widget? rightIcon;
   final VoidCallback? leftOnPress;
-  bool? showBackBtn;
+  final bool? showBackBtn;
   final VoidCallback? rightOnPress;
 
-  CustomAppBar(
+  const CustomAppBar(
       {Key? key,
       this.title,
       this.leftIcon,
@@ -44,7 +44,7 @@ class CustomAppBar extends StatelessWidget {
                           ),
                         ),
                       )
-                    : SizedBox( width: 25, height: 25,)
+                    : const SizedBox( width: 25, height: 25,)
                 : InkWell(
                     onTap: leftOnPress ?? () => Get.back(),
                     child: leftIcon ?? Container(

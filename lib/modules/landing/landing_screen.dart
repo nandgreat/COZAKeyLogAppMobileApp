@@ -20,6 +20,7 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> {
   @override
   void initState() {
+
     getUserInfo();
 
     super.initState();
@@ -38,6 +39,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Container(

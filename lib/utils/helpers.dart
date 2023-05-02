@@ -22,6 +22,10 @@ hideKeyboard(BuildContext context) {
   FocusScope.of(context).requestFocus(new FocusNode());
 }
 
+String replaceCharAt(String oldString, int index, String newChar) {
+  return oldString.substring(0, index) + newChar + oldString.substring(index + 1);
+}
+
 logItem(item) {
   if (kDebugMode) {
     print(item);

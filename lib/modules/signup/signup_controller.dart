@@ -1,18 +1,12 @@
-import 'dart:convert';
-
 import 'package:coza_app/controllers/connection_manager_controller.dart';
 import 'package:coza_app/data/repositories/auth.dart';
-import 'package:coza_app/models/login/LoginRequest.dart';
-import 'package:coza_app/models/login/LoginResponse.dart';
 import 'package:coza_app/utils/helpers.dart';
-import 'package:coza_app/utils/local_storage_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../models/signup/SignupRequest.dart';
 import '../../models/signup/SignupResponse.dart';
-import '../home/home_screen.dart';
 import '../verify_otp/verify_otp.dart';
 
 class SignupController extends GetxController {
@@ -39,11 +33,17 @@ class SignupController extends GetxController {
 
     isLoading.value = true;
 
+    String phoneNumber = phoneController.text.toString();
+
+    phoneNumber = phoneNumber.startsWith("0")
+        ? phoneNumber.substring(1, phoneNumber.length - 1)
+        : phoneNumber;
+
     SignupRequest signupRequest = SignupRequest(
         firstName: firstNameController.text.toString(),
         lastName: lastNameController.text.toString(),
         username: usernameController.text.toString(),
-        phone: int.parse(phoneController.text.toString()),
+        phone: int.parse(phoneNumber),
         email: emailController.text.toString(),
         country: "Nigeria",
         password: passwordController.text.toString());
@@ -67,8 +67,9 @@ class SignupController extends GetxController {
         showSnackBar(
             title: "Register Success", message: message, type: 'success');
 
-        Get.to(const VerifyOtpScreen());
-
+        Get.to(() => const VerifyOtpScreen(), arguments: [
+          {'phone_number': phoneNumber}
+        ]);
       } else {
         isLoading.value = false;
         var message = SignupResponse.fromJson(response.body).message.toString();

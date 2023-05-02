@@ -59,7 +59,7 @@ class ContinueWith extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomButton(
-                  label: "Faceboook",
+                  label: "Facebook",
                   onPressed: () => {},
                   labelColor: primaryColor,
                   icon: SvgPicture.asset(FACEBOOK_ICON),

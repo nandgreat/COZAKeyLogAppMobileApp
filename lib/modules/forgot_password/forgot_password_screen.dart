@@ -72,7 +72,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 CustomButton(
                     label: "Submit",
                     onPressed: () {
-                      Get.to(const VerifyOtpScreen());
+                      Get.to(VerifyOtpScreen());
                     })
               ],
             ),
