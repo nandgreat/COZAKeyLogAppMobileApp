@@ -49,6 +49,25 @@ class ApiClient extends GetConnect implements GetxService {
       throw Exception(e);
     }
   }
+
+// POST METHOD
+  Future<Response> putRequest(
+      {required String url, required Map<dynamic, dynamic> data}) async {
+    try {
+      Response response;
+      // The below request is the same as above.
+      print("--------------------------------------");
+      print(baseUrl);
+      print(url);
+      response = await put(url, data);
+      print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+      print(response.body.toString());
+      return response;
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e);
+    }
+  }
 }
 
 // // GET METHOD

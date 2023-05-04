@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 60.0,
             decoration: BoxDecoration(
                 color: primaryColor, borderRadius: BorderRadius.circular(10.0)),
-            child: Center(
+            child: const Center(
                 child: Text(
               "Done",
               style:
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: deviceWidth(context),
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 Container(
@@ -99,13 +99,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 20.0,
                 ),
-                profileItems(NOTE_IMAGE_ICON, "My Testimonies", hasEndIcon: true),
-                Row(
-                  children: [
-                    Expanded(child: profileItems(NOTE_IMAGE_ICON, "Subscriptions")),
-                    Expanded(child: profileItems(NOTE_IMAGE_ICON, "My Gallery")),
-                  ],
-                ),
+                profileItems(NOTE_IMAGE_ICON, "My Testimonies",
+                    hasEndIcon: true),
+                profileItems(NOTE_IMAGE_ICON, "Subscriptions"),
+                profileItems(NOTE_IMAGE_ICON, "My Gallery")
               ]),
             ),
           ),
@@ -117,12 +114,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Padding profileItems(String itemIcon, String title,
       {bool? hasEndIcon = false}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
       child: Container(
         decoration: BoxDecoration(
-            color: lightGrey, borderRadius: BorderRadius.circular(15.0)),
+            color: lightGrey, borderRadius: BorderRadius.circular(10.0)),
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
           child: Row(
             children: [
               Expanded(
@@ -132,8 +129,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     InkWell(
                       onTap: () => Get.to(const ProfileScreen()),
                       child: Container(
-                        height: 40,
-                        width: 40,
+                        height: 35,
+                        width: 35,
                         child: Image.asset(
                           NOTE_IMAGE_ICON,
                           color: primaryColor,

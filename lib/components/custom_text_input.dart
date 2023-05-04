@@ -2,9 +2,10 @@ import 'package:coza_app/res/color_palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 typedef CustomCallBack = String Function(String value);
 
-class CustomTextField extends StatefulWidget {
+class CustomTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final String? hintText;
   final Widget? prefixIcon;
@@ -14,7 +15,7 @@ class CustomTextField extends StatefulWidget {
   final bool? obscureText;
   final Function? validator;
   final TextEditingController? controller;
-  final CustomCallBack? functionValidate;
+  final String? Function(String)? functionValidate;
   final String? parametersValidate;
   final int? maximumLines;
   final TextInputAction? actionKeyboard;
@@ -22,7 +23,7 @@ class CustomTextField extends StatefulWidget {
   final Function? onFieldTap;
   final String? label;
 
-  const CustomTextField(
+  CustomTextField(
       {required this.hintText,
       this.focusNode,
       this.textInputType,
@@ -40,11 +41,6 @@ class CustomTextField extends StatefulWidget {
       this.suffixIcon,
       this.label});
 
-  @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
-}
-
-class _CustomTextFieldState extends State<CustomTextField> {
   double bottomPaddingToError = 12;
 
   @override
@@ -56,9 +52,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.label != null
+          label != null
               ? Text(
-                  widget.label!,
+                  label!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: primaryColor,
@@ -66,29 +62,29 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   ),
                 )
               : Container(),
-          widget.label != null
+          label != null
               ? const SizedBox(
                   height: 5.0,
                 )
               : Container(),
           TextFormField(
             cursorColor: primaryColor,
-            obscureText: widget.obscureText!,
-            keyboardType: widget.textInputType,
-            textInputAction: widget.actionKeyboard,
-            maxLines: widget.maximumLines,
-            focusNode: widget.focusNode,
+            obscureText: obscureText!,
+            keyboardType: textInputType,
+            textInputAction: actionKeyboard,
+            maxLines: maximumLines,
+            focusNode: focusNode,
             style: const TextStyle(
               color: Colors.black,
               fontSize: 16.0,
             ),
-            initialValue: widget.defaultText,
+            initialValue: defaultText,
             decoration: InputDecoration(
-              prefixIcon: widget.prefixIcon,
-              suffixIcon: widget.suffixIcon,
+              prefixIcon: prefixIcon,
+              suffixIcon: suffixIcon,
               filled: true,
               fillColor: Colors.grey[200],
-              hintText: widget.hintText,
+              hintText: hintText,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13.0),
                 borderSide: BorderSide(color: Colors.grey[100]!, width: 0.0),
@@ -117,13 +113,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderSide: BorderSide(color: primaryColor),
               ),
             ),
-            controller: widget.controller,
-            validator: (value) => commonValidation(value!, widget.label!),
+            controller: controller,
+            validator: (value) => functionValidate != null
+                ? functionValidate!(value!)
+                : commonValidation(value!, label!),
             onFieldSubmitted: (value) {
-              if (widget.onSubmitField != null) widget.onSubmitField!();
+              if (onSubmitField != null) onSubmitField!();
             },
             onTap: () {
-              if (widget.onFieldTap != null) widget.onFieldTap!();
+              if (onFieldTap != null) onFieldTap!();
             },
           ),
         ],

@@ -16,7 +16,7 @@ class SignupRequest {
     password = json['password'];
     country = json['country'];
     email = json['email'];
-    referredBy = json['referred_by'];
+    referredBy = json['referredBy'];
     phone = json['phone'];
   }
   String? firstName;
@@ -36,7 +36,7 @@ class SignupRequest {
     map['password'] = password;
     map['country'] = country;
     map['email'] = email;
-    map['referred_by'] = referredBy;
+    map['referredBy'] = referredBy;
     map['phone'] = phone;
     return map;
   }

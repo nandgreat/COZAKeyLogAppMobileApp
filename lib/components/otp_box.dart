@@ -19,7 +19,7 @@ class OtpBoxWidget extends StatelessWidget {
       padding: const EdgeInsets.only(right: 10.0),
       child: SizedBox(
         height: 80,
-        width: 50,
+        width: 45,
         child: TextField(
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
@@ -41,9 +41,9 @@ class OtpBoxWidget extends StatelessWidget {
             ),
             hintStyle: TextStyle(
                 color: Colors.grey[700],
-                fontSize: 14.0,
+                fontSize: 16.0,
                 fontWeight: FontWeight.w200),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
             isDense: true,
             errorStyle: const TextStyle(color: Colors.red, fontSize: 12.0),
             errorBorder: OutlineInputBorder(

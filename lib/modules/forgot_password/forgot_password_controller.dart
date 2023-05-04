@@ -1,30 +1,26 @@
-import 'dart:convert';
-
 import 'package:coza_app/controllers/connection_manager_controller.dart';
 import 'package:coza_app/data/repositories/auth.dart';
-import 'package:coza_app/models/login/LoginRequest.dart';
-import 'package:coza_app/models/login/LoginResponse.dart';
-import 'package:coza_app/modules/bottom_nav/bottom_dart.dart';
+import 'package:coza_app/models/forgot_password/PasswordRequest.dart';
+import 'package:coza_app/models/forgot_password/PasswordResponse.dart';
+import 'package:coza_app/modules/verify_otp/verify_otp.dart';
 import 'package:coza_app/utils/helpers.dart';
-import 'package:coza_app/utils/local_storage_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../home/home_screen.dart';
+import '../reset_password/reset_password_screen.dart';
 
-class LoginController extends GetxController {
+
+class ForgotPasswordController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
-  User user = User();
   var isLoading = false.obs;
 
   var emailController = TextEditingController();
-  var passwordController = TextEditingController();
 
   ConnectionManagerController connectionManagerController =
       Get.put(ConnectionManagerController());
 
-  Future<void> login() async {
+  Future<void> passwordRequest() async {
     RxInt idFromFirstController = connectionManagerController.connectionType;
 
     if (idFromFirstController.value == 0) {
@@ -34,34 +30,25 @@ class LoginController extends GetxController {
 
     isLoading.value = true;
 
-    LoginRequest loginRequest = LoginRequest(
-        id: emailController.text.trim(),
-        password: passwordController.text.trim());
-
-    print(loginRequest);
+    PasswordRequest passwordRequest = PasswordRequest( email: emailController.text.trim());
 
     try {
-      Response response = await _authRepository.login(loginRequest);
+      Response response = await _authRepository.forgotPassword(passwordRequest);
 
       // ignore: unrelated_type_equality_checks
       if (response.isOk) {
-        var user = LoginResponse.fromJson(response.body).data?.user;
-        String userString = jsonEncode(user);
+        var message = PasswordResponse.fromJson(response.body).message;
 
-        LocalStorageHelper localStorageHelper = LocalStorageHelper();
-        await localStorageHelper.storeItem(key: "user", value: userString);
+        isLoading.value = false;
 
         emailController.clear();
-        passwordController.clear();
-        print(user);
-        isLoading.value = false;
+        showSnackBar(title: "Success", message: message, type: 'success');
 
-        Get.offAll(BottomNav());
+        Get.to(const ResetPasswordScreen());
 
-        update();
       } else {
         isLoading.value = false;
-        var message = LoginResponse.fromJson(response.body).message.toString();
+        var message = PasswordResponse.fromJson(response.body).message.toString();
 
         showSnackBar(title: "Error", message: message, type: 'error');
       }

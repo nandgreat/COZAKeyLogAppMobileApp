@@ -8,4 +8,6 @@ class Endpoints {
   static const String REGISTER = "auth/register";
   static const String LOGIN = "auth/login";
   static const String VERIFY_OTP = "auth/verify/";
+  static const String PASSWORD_REQUEST = "auth/password-request";
+  static const String RESET_PASSWORD = "auth/password-reset";
 }
