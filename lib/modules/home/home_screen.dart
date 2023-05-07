@@ -22,7 +22,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../coza_city/coza_city_screen.dart';
 import '../coza_kids/coza_kids_screen.dart';
-import '../profile_screen/profile_screen.dart';
+import '../profile/profile_screen.dart';
 
 final pageList = [DECREE_YOUR_DAY_IMAGE, DECREE_YOUR_DAY_IMAGE];
 
@@ -65,8 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           InkWell(
                             onTap: () => Get.to(const ProfileScreen()),
                             child: Container(
-                              height: 60,
-                              width: 60,
+                              height: 50,
+                              width: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 border: Border.all(color: primaryColor),
@@ -100,13 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 30.0,
                       width: 50.0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {
-                        homeController.logout();
-                      },
+                      onTap: () {},
                       child: SvgPicture.asset(
                         NOTIFICATION_ICON,
                         height: 30.0,

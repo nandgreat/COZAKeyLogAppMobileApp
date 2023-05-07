@@ -55,4 +55,7 @@ const  String SMILEY_IMAGE_ICON = 'assets/images/smiley_image_icon.png';
 const  String MIC_IMAGE_ICON = 'assets/images/mic_image_icon.png';
 const  String NOTE_IMAGE_ICON = 'assets/images/note_image_icon.png';
 const  String SETTINGS_IMAGE_ICON = 'assets/images/setting_image_icon.png';
+const  String SUBSCRIPTION_ICON = 'assets/images/subscription_icon.png';
+const  String GALLERY_ICON = 'assets/images/gallery_icon.png';
+const  String FORBIDDEN_ICON = 'assets/images/forbidden.png';
 
