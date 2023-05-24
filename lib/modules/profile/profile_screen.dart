@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../components/base_screen.dart';
 import '../../components/custom_button.dart';
 import '../../models/login/LoginResponse.dart';
+import '../../models/login/User.dart';
 import '../../res/images.dart';
 import '../../utils/helpers.dart';
 import '../home/home_controller.dart';

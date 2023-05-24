@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../components/base_screen.dart';
 import '../../models/login/LoginResponse.dart';
+import '../../models/login/User.dart';
 import '../../res/images.dart';
 import '../../utils/helpers.dart';
 import '../home/home_controller.dart';
@@ -55,7 +56,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             child: Column(
                               children: [
                                 Text(
-                                  '${homeController.user.value!.firstName!} ${homeController.user.value!.lastName!}',
+                                  '${homeController.user.value!.firstName} ${homeController.user.value!.lastName!}',
                                   style: const TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w600),

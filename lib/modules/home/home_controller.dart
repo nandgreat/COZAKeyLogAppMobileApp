@@ -5,6 +5,7 @@ import 'package:coza_app/modules/login/login_screen.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:get/get.dart';
 
+import '../../models/login/User.dart';
 import '../../utils/local_storage_helper.dart';
 
 class HomeController extends GetxController {

@@ -8,6 +8,8 @@ typedef CustomCallBack = String Function(String value);
 class CustomTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final String? hintText;
+  final bool? ignoreCursor;
+  final VoidCallback? onTap;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final String? defaultText;
@@ -28,7 +30,9 @@ class CustomTextField extends StatelessWidget {
       this.focusNode,
       this.textInputType,
       this.defaultText,
+      this.ignoreCursor = false,
       this.maximumLines = 1,
+      this.onTap,
       this.obscureText = false,
       this.controller,
       this.validator,
@@ -71,6 +75,7 @@ class CustomTextField extends StatelessWidget {
             cursorColor: primaryColor,
             obscureText: obscureText!,
             keyboardType: textInputType,
+            readOnly: ignoreCursor!,
             textInputAction: actionKeyboard,
             maxLines: maximumLines,
             focusNode: focusNode,

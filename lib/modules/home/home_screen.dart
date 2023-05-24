@@ -16,6 +16,7 @@ import '../../components/section_image_with_header_and_sub.dart';
 import '../../components/section_large_image_with_header.dart';
 import '../../components/section_parternship_image_with_header.dart';
 import '../../models/login/LoginResponse.dart';
+import '../../models/login/User.dart';
 import '../../res/color_palette.dart';
 import '../../res/images.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

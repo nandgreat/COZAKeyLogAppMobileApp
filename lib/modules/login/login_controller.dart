@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../models/login/User.dart';
 import '../home/home_screen.dart';
 
 class LoginController extends GetxController {
@@ -46,10 +47,12 @@ class LoginController extends GetxController {
       // ignore: unrelated_type_equality_checks
       if (response.isOk) {
         var user = LoginResponse.fromJson(response.body).data?.user;
+        var token = LoginResponse.fromJson(response.body).data?.token;
         String userString = jsonEncode(user);
 
         LocalStorageHelper localStorageHelper = LocalStorageHelper();
         await localStorageHelper.storeItem(key: "user", value: userString);
+        await localStorageHelper.storeItem(key: "token", value: token!);
 
         emailController.clear();
         passwordController.clear();

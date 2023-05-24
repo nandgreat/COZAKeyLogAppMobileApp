@@ -1,16 +1,18 @@
+import 'dart:math';
+
 import 'package:coza_app/res/color_palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../components/base_screen.dart';
-import '../../components/custom_button.dart';
 import '../../components/custom_text_input.dart';
 import '../../models/login/LoginResponse.dart';
+import '../../models/login/User.dart';
 import '../../res/images.dart';
 import '../../utils/helpers.dart';
-import '../home/home_controller.dart';
-import '../view_profile/view_profile_screen.dart';
 import 'edit_profile_controller.dart';
 
 class EditProfile extends StatefulWidget {
@@ -37,24 +39,34 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: BaseScreen(
           title: "Edit Profile",
-          rightIcon: Container(
-            height: 40.0,
-            width: 60.0,
-            decoration: BoxDecoration(
-                color: primaryColor, borderRadius: BorderRadius.circular(10.0)),
-            child: const Center(
-                child: Text(
-              "Done",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-            )),
+          rightIcon: InkWell(
+            onTap: editProfileController.updateProfile,
+            child: Container(
+              height: 40.0,
+              width: 60.0,
+              decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Obx(() => Center(
+                  child: editProfileController.isLoading.value
+                      ? const SpinKitCircle(
+                          size: 30.0,
+                          color: Colors.white,
+                        )
+                      : const Text(
+                          "Save",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ))),
+            ),
           ),
           child: SingleChildScrollView(
-            child: SizedBox(
-              width: deviceWidth(context),
+              reverse: true,
+              child: SizedBox(
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 const SizedBox(
@@ -63,18 +75,64 @@ class _EditProfileState extends State<EditProfile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(50.0),
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50.0),
-                          image: const DecorationImage(
-                              image: AssetImage(DEMO_USER_IMAGE)),
-                        ),
-                      ),
+                    InkWell(
+                      onTap: () {
+                        Get.bottomSheet(
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16.0),
+                                  topRight: Radius.circular(16.0)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Wrap(
+                                alignment: WrapAlignment.end,
+                                crossAxisAlignment: WrapCrossAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ListTile(
+                                      leading: const Icon(Icons.camera),
+                                      title: const Text('Camera'),
+                                      onTap: () {
+                                        Get.back();
+                                        editProfileController
+                                            .uploadImage(ImageSource.camera);
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: ListTile(
+                                      leading: const Icon(Icons.image),
+                                      title: const Text('Gallery'),
+                                      onTap: () {
+                                        Get.back();
+                                        editProfileController
+                                            .uploadImage(ImageSource.gallery);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Obx(() => Material(
+                          elevation: 5,
+                          borderRadius: BorderRadius.circular(60.0),
+                          child: CircleAvatar(
+                            radius: 60.0,
+                            backgroundImage:
+                                editProfileController.imageUrl.value.isEmpty
+                                    ? const AssetImage(DEMO_USER_IMAGE)
+                                    : NetworkImage(editProfileController
+                                        .imageUrl.value
+                                        .toString()) as ImageProvider,
+                          ))),
                     ),
                   ],
                 ),
@@ -87,7 +145,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                 CustomTextField(
+                CustomTextField(
                   hintText: 'Enter Last Name',
                   label: "Last Name",
                   controller: editProfileController.lastNameController,
@@ -96,7 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                 CustomTextField(
+                CustomTextField(
                   hintText: 'Enter Email',
                   label: "Email",
                   controller: editProfileController.emailController,
@@ -105,7 +163,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                 CustomTextField(
+                CustomTextField(
                   hintText: 'Enter Mobile Number',
                   label: "Mobile Number",
                   controller: editProfileController.phoneController,
@@ -114,16 +172,62 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                 CustomTextField(
+                CustomTextField(
                   hintText: 'Select Gender',
                   label: "Gender",
+                  onFieldTap: () {
+                    Get.bottomSheet(
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.0),
+                              topRight: Radius.circular(16.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Wrap(
+                            alignment: WrapAlignment.end,
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ListTile(
+                                  leading: const Icon(Icons.male),
+                                  title: const Text('Male'),
+                                  onTap: () {
+                                    Get.back();
+                                    editProfileController
+                                        .genderController.text = "Male";
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ListTile(
+                                  leading: const Icon(Icons.female),
+                                  title: const Text('Female'),
+                                  onTap: () {
+                                    Get.back();
+                                    editProfileController
+                                        .genderController.text = "Female";
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  ignoreCursor: true,
                   controller: editProfileController.genderController,
                   prefixIcon: const Icon(CupertinoIcons.person),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                 CustomTextField(
+                CustomTextField(
                   hintText: 'Enter Occupation',
                   label: "Occupation",
                   controller: editProfileController.occupationController,
@@ -132,83 +236,75 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                 CustomTextField(
+                CustomTextField(
                   hintText: 'Select Marital Status',
                   label: "Marital Status",
+                  onFieldTap: () {
+                    Get.bottomSheet(
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.0),
+                              topRight: Radius.circular(16.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Wrap(
+                            alignment: WrapAlignment.end,
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ListTile(
+                                  title: const Text('Single'),
+                                  onTap: () {
+                                    Get.back();
+                                    editProfileController
+                                        .maritalStatusController
+                                        .text = "Single";
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ListTile(
+                                  title: const Text('Married'),
+                                  onTap: () {
+                                    Get.back();
+                                    editProfileController
+                                        .maritalStatusController
+                                        .text = "Married";
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ListTile(
+                                  title: const Text('Widowed'),
+                                  onTap: () {
+                                    Get.back();
+                                    editProfileController
+                                        .maritalStatusController
+                                        .text = "Widowed";
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  ignoreCursor: true,
                   controller: editProfileController.maritalStatusController,
                   prefixIcon: const Icon(CupertinoIcons.person),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-               ]),
+              ]),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding profileItems(
-      {required String itemIcon,
-      required String title,
-      bool isFull = true,
-      String? subTitle,
-      bool? hasEndIcon = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: lightGrey, borderRadius: BorderRadius.circular(10.0)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Row(
-                children: [
-                  InkWell(
-                    onTap: () => Get.to(const EditProfile()),
-                    child: SizedBox(
-                      height: 35,
-                      width: 35,
-                      child: Image.asset(
-                        itemIcon,
-                        color: primaryColor,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: title.length > 10 && !isFull ? 14 : 16.0,
-                            height: 1,
-                            color: primaryColor),
-                      ),
-                      subTitle != null
-                          ? Text(
-                              subTitle,
-                              style: TextStyle(
-                                  fontSize: 10.0, color: primaryColor),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ],
-              )),
-              if (hasEndIcon!)
-                Icon(
-                  Icons.edit,
-                  color: primaryColor,
-                )
-            ],
           ),
         ),
       ),

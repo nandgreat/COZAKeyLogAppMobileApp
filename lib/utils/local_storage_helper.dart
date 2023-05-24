@@ -4,6 +4,8 @@ import 'package:coza_app/models/login/LoginResponse.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../models/login/User.dart';
+
 class LocalStorageHelper {
   final storage = const FlutterSecureStorage();
 
@@ -33,7 +35,7 @@ class LocalStorageHelper {
   Future<User?> getUser() async {
     try {
       var userString = await storage.read(key: "user");
-      User newThing = User.fromJson(jsonDecode(userString!.trim()));
+      User? newThing = User.fromJson(jsonDecode(userString!.trim()));
 
       // var newUser = LoginResponse.fromJson(json.decode(userString!.trim())).data?.user;
       return newThing;
