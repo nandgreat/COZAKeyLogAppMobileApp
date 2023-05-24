@@ -148,8 +148,12 @@ class _ViewProfileState extends State<ViewProfile> {
                               width: 70,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(35.0),
-                                image: const DecorationImage(
-                                    image: AssetImage(DEMO_USER_IMAGE)),
+                                image: DecorationImage(
+                                    image: homeController.user.value!.profilePicture != null
+                                        ? NetworkImage(
+                                        homeController.user.value!.profilePicture!)
+                                    as ImageProvider
+                                        : AssetImage(DEMO_USER_IMAGE)),
                               ),
                             ),
                           ),

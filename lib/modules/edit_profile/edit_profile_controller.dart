@@ -53,6 +53,7 @@ class EditProfileController extends GetxController {
     lastNameController.text = user.value!.lastName!;
     emailController.text = user.value!.email!;
     phoneController.text = user.value!.phone!;
+    imageUrl.value = user.value!.profilePicture!;
     logItem(user.value!.firstName);
   }
 

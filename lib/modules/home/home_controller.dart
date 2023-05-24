@@ -17,7 +17,7 @@ class HomeController extends GetxController {
   Future<void> getUser() async {
     user.value = await localStorageHelper.getUser();
     logItem("±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±");
-    logItem(user.value!.firstName);
+    logItem(user.value!.profilePicture);
   }
 
   Future<void> logout() async {

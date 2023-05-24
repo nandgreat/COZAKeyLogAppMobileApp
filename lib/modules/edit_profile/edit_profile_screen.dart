@@ -26,8 +26,6 @@ class _EditProfileState extends State<EditProfile> {
   EditProfileController editProfileController =
       Get.put(EditProfileController());
 
-  User user = User();
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {

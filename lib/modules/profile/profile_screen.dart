@@ -76,8 +76,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 50,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  image: const DecorationImage(
-                                      image: AssetImage(DEMO_USER_IMAGE)),
+                                  image: DecorationImage(
+                                      image: homeController.user.value!.profilePicture != null
+                                          ? NetworkImage(
+                                          homeController.user.value!.profilePicture!)
+                                      as ImageProvider
+                                          : AssetImage(DEMO_USER_IMAGE)),
                                 ),
                               ),
                               const SizedBox(
