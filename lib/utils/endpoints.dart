@@ -12,4 +12,5 @@ class Endpoints {
   static const String VERIFY_OTP = "auth/verify/";
   static const String PASSWORD_REQUEST = "auth/password-request";
   static const String RESET_PASSWORD = "auth/password-reset";
+  static const String CHANGE_PASSWORD = "user/profile/reset-password";
 }

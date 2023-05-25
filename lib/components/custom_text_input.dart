@@ -1,11 +1,12 @@
 import 'package:coza_app/res/color_palette.dart';
+import 'package:coza_app/utils/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 typedef CustomCallBack = String Function(String value);
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextInputType? textInputType;
   final String? hintText;
   final bool? ignoreCursor;
@@ -14,7 +15,9 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? defaultText;
   final FocusNode? focusNode;
-  final bool? obscureText;
+  late final bool? obscureText;
+  final bool togglePassword;
+  final bool enabled;
   final Function? validator;
   final TextEditingController? controller;
   final String? Function(String)? functionValidate;
@@ -33,7 +36,9 @@ class CustomTextField extends StatelessWidget {
       this.ignoreCursor = false,
       this.maximumLines = 1,
       this.onTap,
+        this.enabled = true,
       this.obscureText = false,
+      this.togglePassword = false,
       this.controller,
       this.validator,
       this.functionValidate,
@@ -45,7 +50,20 @@ class CustomTextField extends StatelessWidget {
       this.suffixIcon,
       this.label});
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
   double bottomPaddingToError = 12;
+  late bool _obscureText;
+
+
+  @override
+  void initState() {
+    _obscureText = widget.obscureText!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +74,9 @@ class CustomTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          label != null
+          widget.label != null
               ? Text(
-                  label!,
+                  widget.label!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: primaryColor,
@@ -66,30 +84,39 @@ class CustomTextField extends StatelessWidget {
                   ),
                 )
               : Container(),
-          label != null
+          widget.label != null
               ? const SizedBox(
                   height: 5.0,
                 )
               : Container(),
           TextFormField(
             cursorColor: primaryColor,
-            obscureText: obscureText!,
-            keyboardType: textInputType,
-            readOnly: ignoreCursor!,
-            textInputAction: actionKeyboard,
-            maxLines: maximumLines,
-            focusNode: focusNode,
+            obscureText: _obscureText,
+            keyboardType: widget.textInputType,
+            readOnly: widget.ignoreCursor!,
+            enabled: widget.enabled,
+            textInputAction: widget.actionKeyboard,
+            maxLines: widget.maximumLines,
+            focusNode: widget.focusNode,
             style: const TextStyle(
               color: Colors.black,
               fontSize: 16.0,
             ),
-            initialValue: defaultText,
+            initialValue: widget.defaultText,
             decoration: InputDecoration(
-              prefixIcon: prefixIcon,
-              suffixIcon: suffixIcon,
+              prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.suffixIcon ?? (widget.togglePassword ? IconButton(
+                icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    logItem(_obscureText);
+                    _obscureText = !_obscureText;
+                  });
+                },
+              ): null),
               filled: true,
               fillColor: Colors.grey[200],
-              hintText: hintText,
+              hintText: widget.hintText,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13.0),
                 borderSide: BorderSide(color: Colors.grey[100]!, width: 0.0),
@@ -118,15 +145,15 @@ class CustomTextField extends StatelessWidget {
                 borderSide: BorderSide(color: primaryColor),
               ),
             ),
-            controller: controller,
-            validator: (value) => functionValidate != null
-                ? functionValidate!(value!)
-                : commonValidation(value!, label!),
+            controller: widget.controller,
+            validator: (value) => widget.functionValidate != null
+                ? widget.functionValidate!(value!)
+                : commonValidation(value!, widget.label!),
             onFieldSubmitted: (value) {
-              if (onSubmitField != null) onSubmitField!();
+              if (widget.onSubmitField != null) widget.onSubmitField!();
             },
             onTap: () {
-              if (onFieldTap != null) onFieldTap!();
+              if (widget.onFieldTap != null) widget.onFieldTap!();
             },
           ),
         ],

@@ -18,13 +18,10 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  final ResetPasswordController _resetPasswordController =
+      Get.put(ResetPasswordController());
 
-  final ResetPasswordController _resetPasswordController = Get.put(
-      ResetPasswordController());
-
-  handleResetPassword() {
-
-  }
+  handleResetPassword() {}
 
   @override
   Widget build(BuildContext context) {
@@ -40,70 +37,77 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
-                  const SizedBox(
-                  height: 80.0,
-                ),
-                SizedBox(
-                  width: deviceWidth(context),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Reset\nPassword?",
-                        style: TextStyle(
-                            height: 1,
-                            fontSize: 28.0,
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold),
+                    const SizedBox(
+                      height: 80.0,
+                    ),
+                    SizedBox(
+                      width: deviceWidth(context),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Reset\nPassword?",
+                            style: TextStyle(
+                                height: 1,
+                                fontSize: 28.0,
+                                color: primaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Enter Reset Token',
+                      label: "Reset Token",
+                      controller: _resetPasswordController.resetTokenController,
+                      textInputType: TextInputType.number,
+                      prefixIcon: const Icon(CupertinoIcons.lock),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'New Password',
+                      label: "New Password",
+                      obscureText: true,
+                      togglePassword: true,
+                      controller: _resetPasswordController.passwordController,
+                      prefixIcon: const Icon(CupertinoIcons.lock),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Confirm Password',
+                      label: "Confirm Password",
+                      obscureText: true,
+                      togglePassword: true,
+                      controller:
+                          _resetPasswordController.confirmPasswordController,
+                      functionValidate:
+                          _resetPasswordController.validatePassword,
+                      prefixIcon: const Icon(CupertinoIcons.lock),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    Obx(() => CustomButton(
+                        label: "Submit",
+                        isLoading: _resetPasswordController.isLoading.value,
+                        onPressed: _resetPasswordController.resetPassword))
+                  ],
                 ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                CustomTextField(
-                  hintText: 'Enter Reset Token',
-                  label: "Reset Token",
-                  controller: _resetPasswordController.resetTokenController,
-                  textInputType: TextInputType.number,
-                  prefixIcon: const Icon(CupertinoIcons.lock),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                CustomTextField(
-                  hintText: 'New Password',
-                  label: "New Password",
-                  controller: _resetPasswordController.passwordController,
-                  prefixIcon: const Icon(CupertinoIcons.lock),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                CustomTextField(
-                    hintText: 'Confirm Password',
-                    label: "Confirm Password",
-                    controller: _resetPasswordController.confirmPasswordController,
-                    functionValidate: _resetPasswordController.validatePassword,
-                    prefixIcon: const Icon(CupertinoIcons.lock),
               ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              Obx(() => CustomButton(
-                  label: "Submit", isLoading: _resetPasswordController.isLoading.value,
-                  onPressed: _resetPasswordController.resetPassword))
-              ],
             ),
           ),
         ),
       ),
-    ),)
-    ,
     );
   }
 }

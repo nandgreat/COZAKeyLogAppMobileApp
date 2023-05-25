@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     hintText: 'Enter Password',
                     label: "Password",
+                    togglePassword: true,
                     controller: loginController.passwordController,
                     obscureText: true,
                     prefixIcon: const Icon(CupertinoIcons.lock),

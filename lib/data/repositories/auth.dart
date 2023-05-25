@@ -30,4 +30,5 @@ class AuthRepository extends GetxService {
     String url = Endpoints.RESET_PASSWORD;
     return apiClient.putRequest(url: url, data: resetPasswordRequest.toJson());
   }
+
 }

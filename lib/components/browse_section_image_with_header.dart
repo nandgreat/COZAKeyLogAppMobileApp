@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../res/images.dart';
 
 class BrowseSectionImageWithHeader extends StatelessWidget {
   final String headerTitle;
@@ -29,10 +27,10 @@ class BrowseSectionImageWithHeader extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 4.0),
+              padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 headerTitle,
-                style: TextStyle(fontSize: 13.0),
+                style: const TextStyle(fontSize: 13.0),
               ),
             ),
           ],

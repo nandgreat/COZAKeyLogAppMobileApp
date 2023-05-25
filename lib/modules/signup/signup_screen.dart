@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:coza_app/components/alternate_login.dart';
 import 'package:coza_app/components/base_screen.dart';
 import 'package:coza_app/components/custom_button.dart';
@@ -22,6 +23,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final SignupController _signupController = Get.put(SignupController());
 
+  String countryValue = "";
+
   handleSignup() {
     hideKeyboard(context);
     if (_signupFormKey.currentState!.validate()) {
@@ -40,99 +43,119 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Form(
               key: _signupFormKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: SizedBox(
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        hintText: 'Username',
-                        label: "Username",
-                        controller: _signupController.usernameController,
-                        prefixIcon: const Icon(CupertinoIcons.person),
+              child: SizedBox(
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      hintText: 'Username',
+                      label: "Username",
+                      controller: _signupController.usernameController,
+                      prefixIcon: const Icon(CupertinoIcons.person),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: CustomTextField(
+                            hintText: 'First Name',
+                            label: "First Name",
+                            controller: _signupController.firstNameController,
+                            prefixIcon: const Icon(CupertinoIcons.person),
+                          ),
+                        )),
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: CustomTextField(
+                            hintText: 'Last Name',
+                            label: "Last Name",
+                            controller: _signupController.lastNameController,
+                            prefixIcon: const Icon(CupertinoIcons.person),
+                          ),
+                        ))
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Email Address',
+                      label: "Email Address",
+                      functionValidate: validateEmailInput,
+                      controller: _signupController.emailController,
+                      prefixIcon: const Icon(CupertinoIcons.mail),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Select Country',
+                      label: "Country",
+                      onFieldTap: () {
+                        showCountryPicker(
+                          context: context,
+                          showPhoneCode: true,
+                          // optional. Shows phone code before the country name.
+                          onSelect: (Country country) {
+                            _signupController.countryController.text = country.name;
+                            print('Select country: ${country.displayName}');
+                          },
+                        );
+                      },
+                      ignoreCursor: true,
+                      controller: _signupController.countryController,
+                      prefixIcon: const Icon(CupertinoIcons.person),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Phone Number',
+                      label: "Phone Number",
+                      textInputType: TextInputType.phone,
+                      controller: _signupController.phoneController,
+                      prefixIcon: const Icon(CupertinoIcons.phone),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Password',
+                      label: "Password",
+                      togglePassword: true,
+                      controller: _signupController.passwordController,
+                      obscureText: true,
+                      prefixIcon: const Icon(CupertinoIcons.lock),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    Obx(() => CustomButton(
+                        label: "Continue",
+                        isLoading: _signupController.isLoading.value,
+                        onPressed: handleSignup)),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    const Text(
+                      "By continuing you agree to the ? ",
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 30.0),
+                      child: Text(
+                        "Terms and Conditions and Privacy Policy",
+                        style: TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: CustomTextField(
-                              hintText: 'First Name',
-                              label: "First Name",
-                              controller: _signupController.firstNameController,
-                              prefixIcon: const Icon(CupertinoIcons.person),
-                            ),
-                          )),
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: CustomTextField(
-                              hintText: 'Last Name',
-                              label: "Last Name",
-                              controller: _signupController.lastNameController,
-                              prefixIcon: const Icon(CupertinoIcons.person),
-                            ),
-                          ))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      CustomTextField(
-                        hintText: 'Email Address',
-                        label: "Email Address",
-                        functionValidate: validateEmailInput,
-                        controller: _signupController.emailController,
-                        prefixIcon: const Icon(CupertinoIcons.mail),
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      CustomTextField(
-                        hintText: 'Phone Number',
-                        label: "Phone Number",
-                        textInputType: TextInputType.phone,
-                        controller: _signupController.phoneController,
-                        prefixIcon: const Icon(CupertinoIcons.phone),
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      CustomTextField(
-                        hintText: 'Password',
-                        label: "Password",
-                        controller: _signupController.passwordController,
-                        obscureText: true,
-                        prefixIcon: const Icon(CupertinoIcons.lock),
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      const ContinueWith(),
-                      Obx(() => CustomButton(
-                          label: "Continue",
-                          isLoading: _signupController.isLoading.value,
-                          onPressed: handleSignup)),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      const Text(
-                        "By continuing you agree to the ? ",
-                        style: TextStyle(fontSize: 12.0),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 30.0),
-                        child: Text(
-                          "Terms and Conditions and Privacy Policy",
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-
+              ),
             ),
           ),
         ),

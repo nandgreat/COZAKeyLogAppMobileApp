@@ -1,3 +1,4 @@
+import 'package:coza_app/modules/change_password/change_password_screen.dart';
 import 'package:coza_app/modules/edit_profile/edit_profile_screen.dart';
 import 'package:coza_app/res/color_palette.dart';
 import 'package:flutter/material.dart';
@@ -127,9 +128,9 @@ class _ViewProfileState extends State<ViewProfile> {
                                 ),
                                 profileItems(
                                   label: "Password",
-                                  value:
-                                      "Change Password",
+                                  value: "Change Password",
                                   hasEndIcon: true,
+                                  onTap: ()=>Get.to(const ChangePasswordScreen()),
                                   itemIcon: FontAwesomeIcons.lock,
                                 ),
                               ],
@@ -149,10 +150,13 @@ class _ViewProfileState extends State<ViewProfile> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(35.0),
                                 image: DecorationImage(
-                                    image: homeController.user.value!.profilePicture != null
-                                        ? NetworkImage(
-                                        homeController.user.value!.profilePicture!)
-                                    as ImageProvider
+                                    image: homeController
+                                                .user.value!.profilePicture !=
+                                            null
+                                        ? NetworkImage(homeController
+                                            .user
+                                            .value!
+                                            .profilePicture!) as ImageProvider
                                         : AssetImage(DEMO_USER_IMAGE)),
                               ),
                             ),
@@ -171,59 +175,64 @@ class _ViewProfileState extends State<ViewProfile> {
   Padding profileItems(
       {required IconData itemIcon,
       required String label,
+      VoidCallback? onTap,
       required String value,
       bool? hasEndIcon = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
-      child: Material(
-        elevation: 5.0,
-        borderRadius: BorderRadius.circular(10.0),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Row(
-                  children: [
-                    InkWell(
-                      child: SizedBox(
-                        child: FaIcon(
-                          itemIcon,
-                          size: 20,
+      child: InkWell(
+        onTap: onTap,
+        child: Material(
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Row(
+                    children: [
+                      InkWell(
+                        child: SizedBox(
+                          child: FaIcon(
+                            itemIcon,
+                            size: 20,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          label,
-                          style: TextStyle(fontSize: 12.0, color: primaryColor),
-                        ),
-                        Text(
-                          value,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.0,
-                              height: 1,
-                              color: primaryColor),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-                if (hasEndIcon!)
-                  Icon(
-                    Icons.keyboard_arrow_right,
-                    color: primaryColor,
-                  )
-              ],
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            label,
+                            style:
+                                TextStyle(fontSize: 12.0, color: primaryColor),
+                          ),
+                          Text(
+                            value,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16.0,
+                                height: 1,
+                                color: primaryColor),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
+                  if (hasEndIcon!)
+                    Icon(
+                      Icons.keyboard_arrow_right,
+                      color: primaryColor,
+                    )
+                ],
+              ),
             ),
           ),
         ),

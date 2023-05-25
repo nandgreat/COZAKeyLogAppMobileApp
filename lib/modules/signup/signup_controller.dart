@@ -17,6 +17,7 @@ class SignupController extends GetxController {
   var lastNameController = TextEditingController();
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
+  var countryController = TextEditingController();
   var phoneController = TextEditingController();
   var passwordController = TextEditingController();
 
@@ -45,7 +46,7 @@ class SignupController extends GetxController {
         username: usernameController.text.trim(),
         phone: int.parse(newPhone),
         email: emailController.text.trim(),
-        country: "Nigeria",
+        country: countryController.text.trim(),
         password: passwordController.text.trim());
 
     logItem("WWWWWWWWWWWWWWWWWWWWWWWWW");

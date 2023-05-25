@@ -1,13 +1,10 @@
 import 'dart:io';
 
-import 'package:coza_app/models/forgot_password/PasswordRequest.dart';
-import 'package:coza_app/models/login/LoginRequest.dart';
-import 'package:coza_app/models/signup/SignupRequest.dart';
 import 'package:coza_app/utils/endpoints.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:get/get.dart';
 
-import '../../models/reset_password/ResetPasswordRequest.dart';
+import '../../models/change_password/ChangePassword.dart';
 import '../api/api_client.dart';
 
 class UserRepository extends GetxService {
@@ -18,6 +15,12 @@ class UserRepository extends GetxService {
 
     var convertedFiled = fileToBytes(data);
     return apiClient.postUploadRequest(url: url, image: convertedFiled);
+  }
+
+
+  Future<Response> changePassword(ChangePasswordRequest changePasswordRequest) async {
+    String url = Endpoints.CHANGE_PASSWORD;
+    return apiClient.putRequest(url: url, data: changePasswordRequest.toJson());
   }
 
   Future<Response> updateProfile(dynamic data) async {

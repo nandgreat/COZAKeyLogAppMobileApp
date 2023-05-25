@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:coza_app/res/color_palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../components/base_screen.dart';
 import '../../components/custom_text_input.dart';
@@ -25,6 +27,23 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   EditProfileController editProfileController =
       Get.put(EditProfileController());
+
+  List<String> campusList = [
+    'Guzape Campus',
+    'Gwarimpa Campus',
+    'Maraba Campus',
+    'Karu Campus',
+    'Gwagwalada Campus',
+    'Kuje Campus',
+    'FHA Lugbe Campus',
+    'Wuse Zone 5 Campus',
+    'Kubwa Campus',
+    'Dubai Campus',
+    'Manchester Campus',
+    'Port Harcourt Campus',
+    'Ilorin Campus',
+    'Lagos Campus'
+  ];
 
   @override
   void initState() {
@@ -63,8 +82,8 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
           child: SingleChildScrollView(
-              reverse: true,
-              child: SizedBox(
+            reverse: true,
+            child: SizedBox(
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 const SizedBox(
@@ -155,6 +174,7 @@ class _EditProfileState extends State<EditProfile> {
                 CustomTextField(
                   hintText: 'Enter Email',
                   label: "Email",
+                  enabled: false,
                   controller: editProfileController.emailController,
                   prefixIcon: const Icon(CupertinoIcons.person),
                 ),
@@ -165,7 +185,7 @@ class _EditProfileState extends State<EditProfile> {
                   hintText: 'Enter Mobile Number',
                   label: "Mobile Number",
                   controller: editProfileController.phoneController,
-                  prefixIcon: const Icon(CupertinoIcons.person),
+                  prefixIcon: const Icon(CupertinoIcons.phone),
                 ),
                 const SizedBox(
                   height: 20.0,
@@ -221,6 +241,70 @@ class _EditProfileState extends State<EditProfile> {
                   ignoreCursor: true,
                   controller: editProfileController.genderController,
                   prefixIcon: const Icon(CupertinoIcons.person),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                CustomTextField(
+                  hintText: 'Select Campus',
+                  label: "Campus",
+                  onFieldTap: () {
+                    showBarModalBottomSheet(
+                      expand: false,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.0),
+                              topRight: Radius.circular(16.0)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Wrap(
+                            alignment: WrapAlignment.end,
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text("Select Campus",
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor, fontSize: 18.0),),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ListView.builder(
+                                    itemCount: campusList.length,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      // access element from list using index
+                                      // you can create and return a widget of your choice
+                                      return ListTile(
+                                        leading: const Icon(Icons.church),
+                                        title: Text(campusList[index]),
+                                        onTap: () {
+                                          Get.back();
+                                          editProfileController.campusController
+                                              .text = campusList[index];
+                                        },
+                                      );
+                                    }
+                                ) ,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  ignoreCursor: true,
+                  controller: editProfileController.campusController,
+                  prefixIcon: const Icon(Icons.church_outlined),
                 ),
                 const SizedBox(
                   height: 20.0,

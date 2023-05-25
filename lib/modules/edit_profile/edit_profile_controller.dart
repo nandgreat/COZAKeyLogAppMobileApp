@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:coza_app/controllers/connection_manager_controller.dart';
 import 'package:coza_app/data/repositories/auth.dart';
 import 'package:coza_app/data/repositories/user_repository.dart';
+import 'package:coza_app/models/edit_profile/UploadProfileResponse.dart';
 import 'package:coza_app/models/edit_profile/UploadResponse.dart';
-import 'package:coza_app/models/login/LoginRequest.dart';
 import 'package:coza_app/modules/bottom_nav/bottom_dart.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:coza_app/utils/local_storage_helper.dart';
@@ -16,14 +16,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/edit_profile/EditProfileRequest.dart';
-import '../../models/edit_profile/UpdateProfileResponse.dart';
-import '../../models/login/LoginResponse.dart';
-import '../../models/login/User.dart';
+import '../../models/edit_profile/UploadProfileResponse.dart';
+import '../../models/login/User.dart' as login;
+import '../../models/edit_profile/UploadProfileResponse.dart' as up;
 
 class EditProfileController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
   final UserRepository _userRepository = UserRepository();
-  Rx<User?> user = User().obs;
+  Rx<login.User?> user = login.User().obs;
   LocalStorageHelper localStorageHelper = LocalStorageHelper();
   var isLoading = false.obs;
 
@@ -36,8 +36,9 @@ class EditProfileController extends GetxController {
   var emailController = TextEditingController();
   var occupationController = TextEditingController();
   var maritalStatusController = TextEditingController();
-  var phoneController = TextEditingController();
   var genderController = TextEditingController();
+  var phoneController = TextEditingController();
+  var campusController = TextEditingController();
 
   // campus
   // isMember
@@ -147,7 +148,7 @@ class EditProfileController extends GetxController {
       profilePicture: imageUrl.value,
       maritalStatus: maritalStatusController.text,
       sex: genderController.text,
-      campus: "Kubwa",
+      campus: campusController.text,
       isMember: true,
       occupation: occupationController.text,
     );
@@ -159,11 +160,27 @@ class EditProfileController extends GetxController {
 
       // ignore: unrelated_type_equality_checks
       if (response.isOk) {
-        // var message = UpdateProfileResponse.fromJson(response.body).message;
+        up.User? newuser =
+            UploadProfileResponse.fromJson(response.body).data?.user;
+
+        login.User updatedUser = user.value!;
+
+        if (newuser!.profilePicture! != "") {
+          updatedUser.profilePicture = newuser.profilePicture;
+        }
+        updatedUser.phone = newuser.phone;
+        updatedUser.firstName = newuser.firstName;
+        updatedUser.lastName = newuser.lastName;
+
+        String userString = jsonEncode(updatedUser);
+
+        LocalStorageHelper localStorageHelper = LocalStorageHelper();
+        await localStorageHelper.storeItem(key: "user", value: userString);
 
         isLoading.value = false;
 
-        showSnackBar(title: "Success", message: "Updated successfully", type: 'success');
+        showSnackBar(
+            title: "Success", message: "Updated successfully", type: 'success');
 
         Get.offAll(BottomNav());
 

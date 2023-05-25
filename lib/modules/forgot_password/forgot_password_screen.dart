@@ -1,10 +1,6 @@
-import 'package:coza_app/components/app_bar.dart';
 import 'package:coza_app/components/base_screen.dart';
 import 'package:coza_app/components/custom_button.dart';
 import 'package:coza_app/modules/forgot_password/forgot_password_controller.dart';
-import 'package:coza_app/modules/forgot_password/forgot_password_controller.dart';
-import 'package:coza_app/modules/reset_password/reset_password_screen.dart';
-import 'package:coza_app/modules/verify_otp/verify_otp.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +11,6 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../components/custom_text_input.dart';
 import '../../res/color_palette.dart';
 import '../../res/images.dart';
-import '../signup/signup_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
