@@ -1,20 +1,26 @@
 import 'package:coza_app/res/color_palette.dart';
+import 'package:coza_app/utils/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 typedef CustomCallBack = String Function(String value);
 
 class CustomTextField extends StatefulWidget {
   final TextInputType? textInputType;
   final String? hintText;
+  final bool? ignoreCursor;
+  final VoidCallback? onTap;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final String? defaultText;
   final FocusNode? focusNode;
-  final bool? obscureText;
+  late final bool? obscureText;
+  final bool togglePassword;
+  final bool enabled;
   final Function? validator;
   final TextEditingController? controller;
-  final CustomCallBack? functionValidate;
+  final String? Function(String)? functionValidate;
   final String? parametersValidate;
   final int? maximumLines;
   final TextInputAction? actionKeyboard;
@@ -22,13 +28,17 @@ class CustomTextField extends StatefulWidget {
   final Function? onFieldTap;
   final String? label;
 
-  const CustomTextField(
+  CustomTextField(
       {required this.hintText,
       this.focusNode,
       this.textInputType,
       this.defaultText,
+      this.ignoreCursor = false,
       this.maximumLines = 1,
+      this.onTap,
+        this.enabled = true,
       this.obscureText = false,
+      this.togglePassword = false,
       this.controller,
       this.validator,
       this.functionValidate,
@@ -41,11 +51,19 @@ class CustomTextField extends StatefulWidget {
       this.label});
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
   double bottomPaddingToError = 12;
+  late bool _obscureText;
+
+
+  @override
+  void initState() {
+    _obscureText = widget.obscureText!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +91,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : Container(),
           TextFormField(
             cursorColor: primaryColor,
-            obscureText: widget.obscureText!,
+            obscureText: _obscureText,
             keyboardType: widget.textInputType,
+            readOnly: widget.ignoreCursor!,
+            enabled: widget.enabled,
             textInputAction: widget.actionKeyboard,
             maxLines: widget.maximumLines,
             focusNode: widget.focusNode,
@@ -85,7 +105,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
             initialValue: widget.defaultText,
             decoration: InputDecoration(
               prefixIcon: widget.prefixIcon,
-              suffixIcon: widget.suffixIcon,
+              suffixIcon: widget.suffixIcon ?? (widget.togglePassword ? IconButton(
+                icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    logItem(_obscureText);
+                    _obscureText = !_obscureText;
+                  });
+                },
+              ): null),
               filled: true,
               fillColor: Colors.grey[200],
               hintText: widget.hintText,
@@ -118,7 +146,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
             ),
             controller: widget.controller,
-            validator: (value) => commonValidation(value!, widget.label!),
+            validator: (value) => widget.functionValidate != null
+                ? widget.functionValidate!(value!)
+                : commonValidation(value!, widget.label!),
             onFieldSubmitted: (value) {
               if (widget.onSubmitField != null) widget.onSubmitField!();
             },

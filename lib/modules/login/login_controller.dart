@@ -4,12 +4,14 @@ import 'package:coza_app/controllers/connection_manager_controller.dart';
 import 'package:coza_app/data/repositories/auth.dart';
 import 'package:coza_app/models/login/LoginRequest.dart';
 import 'package:coza_app/models/login/LoginResponse.dart';
+import 'package:coza_app/modules/bottom_nav/bottom_dart.dart';
 import 'package:coza_app/utils/helpers.dart';
 import 'package:coza_app/utils/local_storage_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../models/login/User.dart';
 import '../home/home_screen.dart';
 
 class LoginController extends GetxController {
@@ -34,7 +36,8 @@ class LoginController extends GetxController {
     isLoading.value = true;
 
     LoginRequest loginRequest = LoginRequest(
-        id: emailController.text, password: passwordController.text);
+        id: emailController.text.trim(),
+        password: passwordController.text.trim());
 
     print(loginRequest);
 
@@ -43,39 +46,35 @@ class LoginController extends GetxController {
 
       // ignore: unrelated_type_equality_checks
       if (response.isOk) {
-        var user = LoginResponse
-            .fromJson(response.body)
-            .data
-            ?.user;
+        var user = LoginResponse.fromJson(response.body).data?.user;
+        var token = LoginResponse.fromJson(response.body).data?.token;
         String userString = jsonEncode(user);
 
         LocalStorageHelper localStorageHelper = LocalStorageHelper();
         await localStorageHelper.storeItem(key: "user", value: userString);
+        await localStorageHelper.storeItem(key: "token", value: token!);
 
         emailController.clear();
         passwordController.clear();
         print(user);
         isLoading.value = false;
 
-        Get.to(HomeScreen());
+        Get.offAll(BottomNav());
 
         update();
       } else {
         isLoading.value = false;
-        var message = LoginResponse
-            .fromJson(response.body)
-            .message
-            .toString();
+        var message = LoginResponse.fromJson(response.body).message.toString();
 
         showSnackBar(title: "Error", message: message, type: 'error');
       }
-    }catch(e){
+    } catch (e) {
       isLoading.value = false;
 
       logItem(e);
 
-      showSnackBar(title: "Error", message: "Unexpected Error occurred", type: 'error');
-
+      showSnackBar(
+          title: "Error", message: "Unexpected Error occurred", type: 'error');
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:coza_app/components/alternate_login.dart';
 import 'package:coza_app/components/base_screen.dart';
 import 'package:coza_app/components/custom_button.dart';
+import 'package:coza_app/modules/forgot_password/forgot_password_screen.dart';
 import 'package:coza_app/modules/login/login_controller.dart';
 import 'package:coza_app/modules/signup/signup_screen.dart';
 import 'package:coza_app/utils/helpers.dart';
@@ -55,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     hintText: 'Enter Password',
                     label: "Password",
+                    togglePassword: true,
                     controller: loginController.passwordController,
                     obscureText: true,
                     prefixIcon: const Icon(CupertinoIcons.lock),
@@ -62,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const FloatRightText(text: "Forgot Password"),
+                  FloatRightText(text: "Forgot Password", onPress: () => Get.to(const ForgotPasswordScreen()),),
                   const SizedBox(
                     height: 30.0,
                   ),
@@ -75,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   InkWell(
                     onTap: () => Get.to(SignupScreen()),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
@@ -86,16 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             "Sign up",
                             style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.bold),
+                                fontSize: 14.0, fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  const ContinueWith(),
                 ],
               ),
             ),

@@ -32,6 +32,22 @@ logItem(item) {
   }
 }
 
+
+String? validateEmailInput(String email) {
+
+  if(email.isEmpty) return "Email is required";
+
+  if(!isEmailValid(email)) {
+    return "Enter a valid email address";
+  }
+  return null;
+}
+
+bool isEmailValid(String email) {
+  return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email);
+}
+
 showNoInternetSnackBar() {
   showSnackBar(
       title: "Network Error", message: "No Internet Connection", type: 'error');

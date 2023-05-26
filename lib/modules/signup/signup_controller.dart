@@ -17,6 +17,7 @@ class SignupController extends GetxController {
   var lastNameController = TextEditingController();
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
+  var countryController = TextEditingController();
   var phoneController = TextEditingController();
   var passwordController = TextEditingController();
 
@@ -33,20 +34,23 @@ class SignupController extends GetxController {
 
     isLoading.value = true;
 
-    String phoneNumber = phoneController.text.toString();
+    String phoneNumber = phoneController.text.toString().trim();
 
-    phoneNumber = phoneNumber.startsWith("0")
-        ? phoneNumber.substring(1, phoneNumber.length - 1)
+    String newPhone = phoneNumber.startsWith("0")
+        ? phoneNumber.substring(1)
         : phoneNumber;
 
     SignupRequest signupRequest = SignupRequest(
-        firstName: firstNameController.text.toString(),
-        lastName: lastNameController.text.toString(),
-        username: usernameController.text.toString(),
-        phone: int.parse(phoneNumber),
-        email: emailController.text.toString(),
-        country: "Nigeria",
-        password: passwordController.text.toString());
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        username: usernameController.text.trim(),
+        phone: int.parse(newPhone),
+        email: emailController.text.trim(),
+        country: countryController.text.trim(),
+        password: passwordController.text.trim());
+
+    logItem("WWWWWWWWWWWWWWWWWWWWWWWWW");
+    logItem(newPhone);
 
     try {
       Response response = await _authRepository.signup(signupRequest);
@@ -68,7 +72,7 @@ class SignupController extends GetxController {
             title: "Register Success", message: message, type: 'success');
 
         Get.to(() => const VerifyOtpScreen(), arguments: [
-          {'phone_number': phoneNumber}
+          {'phone_number': newPhone}
         ]);
       } else {
         isLoading.value = false;
@@ -86,5 +90,5 @@ class SignupController extends GetxController {
     }
   }
 
-  void validateInput() {}
+  void validateEmailInput() {}
 }

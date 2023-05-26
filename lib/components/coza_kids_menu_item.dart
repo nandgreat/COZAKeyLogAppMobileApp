@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../res/images.dart';
 
 class COZAKidsMenuItem extends StatelessWidget {
   final String headerTitle;
@@ -43,7 +42,7 @@ class COZAKidsMenuItem extends StatelessWidget {
                         ),
                         Text(
                           headerTitle,
-                          style: TextStyle(fontSize: 12.0, color: Colors.white)
+                          style: const TextStyle(fontSize: 12.0, color: Colors.white)
                         ),
                       ],
                     ),

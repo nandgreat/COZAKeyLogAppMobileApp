@@ -16,13 +16,14 @@ import '../../components/section_image_with_header_and_sub.dart';
 import '../../components/section_large_image_with_header.dart';
 import '../../components/section_parternship_image_with_header.dart';
 import '../../models/login/LoginResponse.dart';
+import '../../models/login/User.dart';
 import '../../res/color_palette.dart';
 import '../../res/images.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../coza_city/coza_city_screen.dart';
 import '../coza_kids/coza_kids_screen.dart';
-import '../profile_screen/profile_screen.dart';
+import '../profile/profile_screen.dart';
 
 final pageList = [DECREE_YOUR_DAY_IMAGE, DECREE_YOUR_DAY_IMAGE];
 
@@ -36,8 +37,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
   HomeController homeController = Get.put(HomeController());
-
-  User user = User();
 
   @override
   void initState() {
@@ -59,54 +58,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   children: [
                     Expanded(
-                        child: Container(
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () => Get.to(const ProfileScreen()),
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(color: primaryColor),
-                                image: const DecorationImage(
-                                    image: AssetImage(DEMO_USER_IMAGE)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Obx(() => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Obx(() => Container(
+                              child: Row(
                                 children: [
-                                  const Text("Welcome"),
-                                  Text(
-                                    homeController.user.value!.firstName!,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25.0,
-                                        height: 1,
-                                        color: primaryColor),
+                                  InkWell(
+                                    onTap: () => Get.to(const ProfileScreen()),
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        border: Border.all(color: primaryColor),
+                                        image: DecorationImage(
+                                            image: homeController.user.value!.profilePicture != null
+                                                ? NetworkImage(
+                                                homeController.user.value!.profilePicture!)
+                                                    as ImageProvider
+                                                : AssetImage(DEMO_USER_IMAGE)),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text("Welcome"),
+                                      Text(
+                                        homeController.user.value!.firstName!,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25.0,
+                                            height: 1,
+                                            color: primaryColor),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              )),
-                        ],
-                      ),
-                    )),
+                              ),
+                            ))),
                     SvgPicture.asset(
                       COMMENT_ICON,
                       height: 30.0,
                       width: 50.0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {
-                        homeController.logout();
-                      },
+                      onTap: () {},
                       child: SvgPicture.asset(
                         NOTIFICATION_ICON,
                         height: 30.0,

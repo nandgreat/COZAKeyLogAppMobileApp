@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:coza_app/components/alternate_login.dart';
 import 'package:coza_app/components/base_screen.dart';
 import 'package:coza_app/components/custom_button.dart';
@@ -22,6 +23,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final SignupController _signupController = Get.put(SignupController());
 
+  String countryValue = "";
+
   handleSignup() {
     hideKeyboard(context);
     if (_signupFormKey.currentState!.validate()) {
@@ -36,14 +39,12 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SafeArea(
         child: BaseScreen(
           title: "Sign up",
-          child: Form(
-            key: _signupFormKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: SingleChildScrollView(
-              child: Container(
-                height: deviceHeight(context),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _signupFormKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: SizedBox(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CustomTextField(
                       hintText: 'Username',
@@ -84,8 +85,30 @@ class _SignupScreenState extends State<SignupScreen> {
                     CustomTextField(
                       hintText: 'Email Address',
                       label: "Email Address",
+                      functionValidate: validateEmailInput,
                       controller: _signupController.emailController,
                       prefixIcon: const Icon(CupertinoIcons.mail),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    CustomTextField(
+                      hintText: 'Select Country',
+                      label: "Country",
+                      onFieldTap: () {
+                        showCountryPicker(
+                          context: context,
+                          showPhoneCode: true,
+                          // optional. Shows phone code before the country name.
+                          onSelect: (Country country) {
+                            _signupController.countryController.text = country.name;
+                            print('Select country: ${country.displayName}');
+                          },
+                        );
+                      },
+                      ignoreCursor: true,
+                      controller: _signupController.countryController,
+                      prefixIcon: const Icon(CupertinoIcons.person),
                     ),
                     const SizedBox(
                       height: 30.0,
@@ -103,6 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     CustomTextField(
                       hintText: 'Password',
                       label: "Password",
+                      togglePassword: true,
                       controller: _signupController.passwordController,
                       obscureText: true,
                       prefixIcon: const Icon(CupertinoIcons.lock),
@@ -110,7 +134,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(
                       height: 30.0,
                     ),
-                    const ContinueWith(),
                     Obx(() => CustomButton(
                         label: "Continue",
                         isLoading: _signupController.isLoading.value,

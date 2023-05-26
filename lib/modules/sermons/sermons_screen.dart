@@ -32,7 +32,7 @@ class _SermonScreenState extends State<SermonScreen> {
                 children: [
                   Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: CustomTextField(
                           hintText: 'Search Video Sermons',
                           prefixIcon: Icon(CupertinoIcons.search),

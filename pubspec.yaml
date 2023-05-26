@@ -39,6 +39,16 @@ dependencies:
   flutter_spinkit: ^5.1.0
   connectivity_plus: ^3.0.6
   flutter_secure_storage: ^8.0.0
+  font_awesome_flutter: ^10.4.0
+  dropdown_button2: ^2.1.0
+  image_picker: ^0.8.0+3
+  image_cropper: ^3.0.1
+  permission_handler: ^10.2.0
+  http: ^0.13.0
+  http_parser: ^4.0.2
+  country_picker: ^2.0.19
+  modal_bottom_sheet: ^2.1.2
+
 
 flutter_native_splash:
 
